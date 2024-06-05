@@ -297,8 +297,7 @@ footer: true
 
 <!-- backend call to create Match -->
 <script>
-    const domain = window.location.hostname;
-    console.log("domain", domain); // Output: 'yourdomain.com'
+    console.log("domain", localStorage.getItem('domain')); // Output: 'yourdomain.com'
 
     const jsonData = localStorage.getItem('matchData');
     const jsonDataStandings = localStorage.getItem('standings');
@@ -306,6 +305,7 @@ footer: true
     const matchData = JSON.parse(jsonData);
     const standingData = JSON.parse(jsonDataStandings);
 
+    console.log("tes", matchData); 
     console.log("matchData from LS", matchData.rounds[0].round);
     console.log("Standing from LS", standingData);
     const queryString = new URLSearchParams(matchData).toString();
@@ -382,8 +382,8 @@ footer: true
         };
 
         // console.log("options", options);
-
-        apiCall(`http://localhost:3000/connect/updatetable`, options)
+        var domain = localStorage.getItem('domain');
+        apiCall(`${domain}:3000/connect/updatetable`, options)
         .then(response => {
             // Check if the response is successful (status code 200)
             if (!response.ok) {

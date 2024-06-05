@@ -157,8 +157,8 @@
         // fetch(`http://localhost:3000/connect/match?${queryString}`)
         
 
-        
-        apiCall(`http://localhost:3000/connect/match?${queryString}`)
+        var domain = localStorage.getItem('domain');
+        apiCall(`${domain}:3000/connect/match?${queryString}`)
             .then(response => {
                 // Check if the response is successful (status code 200)
                 if (!response.ok) {
