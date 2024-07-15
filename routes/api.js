@@ -2,7 +2,7 @@
 const express = require("express");
 var router = express.Router();
 
-const account = require("../controllers/matchController.js");
+const matchDB = require("../controllers/matchController.js");
 
 const response = require("../response/apiresponse.js");
 const algorithm = require("../data/algorithm.json");
@@ -109,9 +109,9 @@ router.post("/updatetable", (req, res) =>{
     return response.successResponseWithData(res, "new standings", newStandings);
 })
 
-router.get("/", account.list)
-router.get("/:id", account.detail)
-router.post("/", account.add)
+router.get("/", matchDB.list)
+router.get("/:id", matchDB.detail)
+router.post("/", matchDB.add)
 
 
 module.exports = router;

@@ -383,7 +383,7 @@ footer: true
 
         // console.log("options", options);
         var domain = localStorage.getItem('domain');
-        apiCall(`${domain}:3000/connect/updatetable`, options)
+        apiCall(`${domain}/connect/updatetable`, options)
         .then(response => {
             // Check if the response is successful (status code 200)
             if (!response.ok) {
