@@ -30,6 +30,13 @@ router.get("/match", (req, res) => {
     });
 });
 
+router.get("/home", (req, res) => {
+    res.render("home", {
+        layout: path.join(__dirname, "../layouts/home"),
+        footer: false,
+    });
+});
+
 router.get("/dashboard", (req, res) => {
     res.render("dashboard", {
         layout: path.join(__dirname, "../layouts/dashboard"),
