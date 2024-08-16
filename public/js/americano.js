@@ -62,7 +62,7 @@ $$(document).on("page:init", '.page[data-name="create-americano"]', function (e)
         console.log(formData);
       
         // Send form data using fetch
-        fetch('http://localhost:3000/api/americano/generateRounds', {
+        fetch('https://americanotennis.com/api/americano/generateRounds', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
