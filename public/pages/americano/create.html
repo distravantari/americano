@@ -1,0 +1,61 @@
+<div class="page" data-name="create-americano">
+  <div class="navbar">
+    <div class="navbar-bg"></div>
+    <div class="navbar-inner">
+      <div class="left">
+        <a href="#" class="link back">
+          <i class="icon f7-icons arrow-back">arrow_left</i>
+        </a>
+      </div>
+      <div class="title">Create Americano</div>
+    </div>
+  </div>
+  
+  <div class="page-content">
+    <form id="createAmericano">
+      <!-- Info Block -->
+      <div class="info-block">
+        <div class="info-block-icon">
+          <i class="icon f7-icons">info_circle_fill</i>
+        </div>
+        <p>On this page, you can whip up your own Americano tennis game with friends! Choose how many players will join in and even give your game a cool name. Let the fun begin!.</p>
+      </div>
+      
+      <!-- Title Input -->
+      <div class="light-gray-title">Your Americano Tennis Name</div>
+      <input type="text" id="title" name="title" placeholder="Choose a title" required>
+      
+      <!-- Number of Players Picker -->
+      <div class="light-gray-title">Select the number of players</div>
+      <input type="text" placeholder="Choose" readonly="readonly" id="picker-number-of-players" name="numberOfPlayers" required>
+      
+      <!-- Player Names Input -->
+      <div class="light-gray-title">Player Names</div>
+      <div id="playerNames">
+        <input type="text" id="playerName" name="playerName[]" placeholder="Player Name" required>
+      </div>
+      
+      <!-- Toggle for Publish As Private -->
+      <div class="list list-outline list-dividers full-width">
+        <ul>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title">Publish As Private</div>
+              <div class="item-after">
+                <label class="toggle toggle-init">
+                  <input type="checkbox" name="isPrivate">
+                  <span class="toggle-icon"></span>
+                </label>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      
+      <!-- Submit Button -->
+      <div class="form-footer">
+        <button type="submit" class="button button-fill button-round color-dark">Publish</button>
+      </div>
+    </form>
+  </div>
+</div>
