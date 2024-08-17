@@ -2,6 +2,9 @@ var picker;
 
 // CREATE AMERICANO PAGE
 $$(document).on("page:init", '.page[data-name="create-americano"]', function (e) {
+     // Clear all localStorage data
+     localStorage.clear();
+     console.log("All localStorage data cleared");
 
     if (picker) {
         picker.destroy(); // Clean up the picker when the page is about to be destroyed
@@ -95,7 +98,7 @@ $$(document).on("page:init", '.page[data-name="create-americano"]', function (e)
                     closeTimeout: 2000,
                 }).open();
             });
-        });
+    });
     
 });
 // END OF AMERICANO PAGE
