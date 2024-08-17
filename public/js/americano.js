@@ -104,7 +104,11 @@ $$(document).on("page:init", '.page[data-name="create-americano"]', function (e)
 // Function to populate the table with player stats
 function populatePlayerStats(players) {
     // Clear the current table content
+    console.log("players", players)
     $$('#playerStatsTableBody').html('');
+  
+    // Sort the players array by rank
+    players.sort((a, b) => a.rank - b.rank);
   
     // Use native DOM manipulation or ensure the string is treated as HTML
     players.forEach(function(player) {
@@ -117,7 +121,7 @@ function populatePlayerStats(players) {
         <td class="label-cell">${player.name}</td>
         <td class="numeric-cell">${player.gPlus}</td>
         <td class="numeric-cell">${player.gMinus}</td>
-        <td class="numeric-cell">${player.gPlus-player.gMinus}</td>
+        <td class="numeric-cell">${player.gPlus - player.gMinus}</td>
         <td class="numeric-cell">${player.tPlus}</td>
         <td class="numeric-cell">${player.tMinus}</td>
         `;
@@ -127,7 +131,7 @@ function populatePlayerStats(players) {
     });
 }
 
-function convertPlayersToObjects(playerNames) {
+function initiatePlayerStats(playerNames) {
     // Create a new array of player objects with rank and initial stats
     return playerNames.map((name, index) => ({
       rank: index + 1,    // Rank is the index + 1
@@ -158,7 +162,7 @@ function generateRoundsTable(roundsData) {
             <tr>
               <td class="label-cell">
                 <div>
-                  <div class="stepper stepper-init">
+                  <div class="stepper stepper-init" id="tiebreak-round${roundData.round}-team1" data-type="tiebreak" data-round="${roundData.round}" data-team="1">
                     <div class="stepper-button-minus"></div>
                     <div class="stepper-input-wrap">
                       <input type="text" value="0" min="0" max="100" step="1" readonly>
@@ -170,7 +174,7 @@ function generateRoundsTable(roundsData) {
               <td class="label-cell centered-text">${roundData.team1.join(' & ')}</td>
               <td class="numeric-cell">
                 <div>
-                  <div class="stepper stepper-init">
+                  <div class="stepper stepper-init" id="game-round${roundData.round}-team1" data-type="game" data-round="${roundData.round}" data-team="1">
                     <div class="stepper-button-minus"></div>
                     <div class="stepper-input-wrap">
                       <input type="text" value="0" min="0" max="100" step="1" readonly>
@@ -183,7 +187,7 @@ function generateRoundsTable(roundsData) {
             <tr>
               <td class="label-cell">
                 <div>
-                  <div class="stepper stepper-init">
+                  <div class="stepper stepper-init"  id="tiebreak-round${roundData.round}-team2" data-type="tiebreak" data-round="${roundData.round}" data-team="2">
                     <div class="stepper-button-minus"></div>
                     <div class="stepper-input-wrap">
                       <input type="text" value="0" min="0" max="100" step="1" readonly>
@@ -195,7 +199,7 @@ function generateRoundsTable(roundsData) {
               <td class="label-cell centered-text">${roundData.team2.join(' & ')}</td>
               <td class="numeric-cell">
                 <div>
-                  <div class="stepper stepper-init">
+                  <div class="stepper stepper-init" id="game-round${roundData.round}-team2" data-type="game" data-round="${roundData.round}" data-team="2">
                     <div class="stepper-button-minus"></div>
                     <div class="stepper-input-wrap">
                       <input type="text" value="0" min="0" max="100" step="1" readonly>
@@ -214,19 +218,44 @@ function generateRoundsTable(roundsData) {
   
     // Dynamically initialize all new steppers within the new content
     $$('.stepper').each(function (el) {
-        app.stepper.create({ el: el });
+        const stepperEl = document.getElementById(el.id);
+
+        // Retrieve initial value from localStorage if it exists
+        const savedValue = localStorage.getItem(el.id);
+        if (savedValue !== null) {
+            stepperEl.querySelector('input').value = savedValue;
+        }
+
+        app.stepper.create({ 
+            el: el,
+            on: {
+                change: function (stepper, value) {
+
+                    const type = stepper.el.dataset.type;
+                    const round = stepper.el.dataset.round;
+                    const team = stepper.el.dataset.team;
+                    const id = stepper.el.id;
+
+                    // Save the stepper value to localStorage
+                    localStorage.setItem(id, value);
+                    
+                    console.log("type round team value", type, round, team, value);
+                    console.log("stepper.el.id", stepper.el.id);
+                }
+            }
+        });
     });
 }
 
 $$(document).on("page:init", '.page[data-name="americano-game"]', function (e) {
 
-    // Get data from localstorage and convert it to JSON
+    // Get data from localStorage and convert it to JSON
     const americanoGame = localStorage.getItem('americano-game');
     const gameData = JSON.parse(americanoGame);
 
     console.log("gameData", gameData);
 
-    var players = convertPlayersToObjects(gameData.players);
+    var players = initiatePlayerStats(gameData.players);
     populatePlayerStats(players);
 
     // Call the function to generate the rounds
