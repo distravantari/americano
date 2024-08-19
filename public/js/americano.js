@@ -83,7 +83,8 @@ $$(document).on("page:init", '.page[data-name="create-americano"]', function (e)
                 // console.log('Success:', data);
                 localStorage.setItem('americano-game', JSON.stringify(data.americano));
                 app.toast.create({
-                    text: 'Form submitted successfully!',
+                    text: 'Americano game ready! Just a sec...',
+                    position: "center",
                     closeTimeout: 2000,
                 }).open();
                  // Navigate to another page after the toast
@@ -94,7 +95,8 @@ $$(document).on("page:init", '.page[data-name="create-americano"]', function (e)
             .catch(error => {
                 console.error('Error:', error);
                 app.toast.create({
-                    text: 'Error submitting form. Please try again.',
+                    text: 'Error creating game. Please try again.',
+                    position: "center",
                     closeTimeout: 2000,
                 }).open();
             });
@@ -353,6 +355,8 @@ function generateRoundsTable(roundsData, players) {
 }
 
 $$(document).on("page:init", '.page[data-name="americano-game"]', function (e) {
+
+    $$('.toolbar').css('display', 'none');
 
     // Get data from localStorage and convert it to JSON
     const americanoGame = localStorage.getItem('americano-game');
