@@ -62,7 +62,7 @@ $$(document).on("page:init", '.page[data-name="create-americano"]', function (e)
         e.preventDefault();
       
         var formData = app.form.convertToData('#createAmericano'); // Convert form data to object
-        console.log(formData);
+        // console.log(formData);
       
         // Send form data using fetch
         fetch('https://americanotennis.com/api/americano/generateRounds', {
@@ -73,14 +73,14 @@ $$(document).on("page:init", '.page[data-name="create-americano"]', function (e)
             body: JSON.stringify(formData), // Convert form data to JSON
         })
             .then(response => {
-                console.log('response:', response);
+                // console.log('response:', response);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
             .then(data => {
-                console.log('Success:', data);
+                // console.log('Success:', data);
                 localStorage.setItem('americano-game', JSON.stringify(data.americano));
                 app.toast.create({
                     text: 'Form submitted successfully!',
@@ -356,6 +356,14 @@ $$(document).on("page:init", '.page[data-name="americano-game"]', function (e) {
 
     // Get data from localStorage and convert it to JSON
     const americanoGame = localStorage.getItem('americano-game');
+
+    // Check if there's no data in localStorage
+    if (!americanoGame) {
+        // Redirect to another page (replace '/home/' with your desired URL)
+        app.views.main.router.navigate('/create-americano/');
+        return;  // Stop further execution
+    }
+
     const gameData = JSON.parse(americanoGame);
 
     var players = initiatePlayerStats(gameData.players);
@@ -369,5 +377,6 @@ $$(document).on("page:init", '.page[data-name="americano-game"]', function (e) {
     // Call the function to generate the rounds
     generateRoundsTable(gameData.rounds, players);
 });
+
 // END OF AMERICANO PAGE
 
