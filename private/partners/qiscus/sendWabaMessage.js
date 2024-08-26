@@ -26,13 +26,14 @@ async function sendToWaba(payload, routes) {
 
 
     console.log(QISCUS_BASE_URL, QISCUS_APP_ID, QISCUS_SECRET_KEY, QISCUS_CHANNEL_ID);
-    console.log(payload, url)
+    console.log("29", url);
+    console.log("30", payload);
 
     try {
         const response = await fetch(url, {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(payload)
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify(payload)
         });
 
         const data = await response.json();
