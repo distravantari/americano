@@ -77,6 +77,20 @@ Author:	Xioyuna
 
 -------------------------------------------------------------------*/
 
+/* Target the #app element */
+#app {
+  max-width: 70%; /* Adjust to 60-70% as needed */
+  margin: 0 auto; /* Center the app */
+  padding: 0 20px; /* Optional: Adds some padding */
+}
+
+@media only screen and (max-width: 768px) {
+  #app {
+    max-width: 100%; /* Full width on mobile screens */
+    padding: 0 10px; /* Adjust padding for mobile screens */
+  }
+}
+
 /* 1. Fonts */
 
 @font-face {

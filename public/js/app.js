@@ -41,6 +41,7 @@ var app = new Framework7({
     {
       path: "/",
       url: "index.html",
+      keepAlive: true,
     },
     {
       path: "/action-sheet/",
@@ -342,6 +343,7 @@ var app = new Framework7({
     {
       path: "/oht/",
       url: "pages/americano/links.html",
+      keepAlive: true,
     },
     {
       path: "/search/",
@@ -354,6 +356,7 @@ var app = new Framework7({
     {
       path: "/404/",
       url: "pages/americano/404.html",
+      keepAlive: true,
     },
     {
       path: "/what-is-americano-tennis/",
