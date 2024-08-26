@@ -4,12 +4,10 @@ const dotenv = require('dotenv');
 
 dotenv.config(); // Load environment variables from .env
 
-const QISCUS_BASE_URL = process.env.QISCUS_BASE_URL;
-const QISCUS_APP_ID = process.env.QISCUS_APP_ID;
-const QISCUS_SECRET_KEY = process.env.QISCUS_SECRET_KEY;
-const QISCUS_CHANNEL_ID = process.env.QISCUS_CHANNEL_ID;
-
-console.log(QISCUS_BASE_URL, QISCUS_APP_ID, QISCUS_SECRET_KEY, QISCUS_CHANNEL_ID);
+const QISCUS_BASE_URL = process.env.QISCUS_BASE_URL
+const QISCUS_APP_ID = process.env.QISCUS_APP_ID
+const QISCUS_SECRET_KEY = process.env.QISCUS_SECRET_KEY
+const QISCUS_CHANNEL_ID = process.env.QISCUS_CHANNEL_ID
 
 // Helper function to send a message to Qiscus WhatsApp API
 async function sendToWaba(payload, routes) {
@@ -23,11 +21,6 @@ async function sendToWaba(payload, routes) {
         'Qiscus-Secret-Key': QISCUS_SECRET_KEY,
         'Content-Type': 'application/json'
     };
-
-
-    console.log(QISCUS_BASE_URL, QISCUS_APP_ID, QISCUS_SECRET_KEY, QISCUS_CHANNEL_ID);
-    console.log("29", url);
-    console.log("30", payload);
 
     try {
         const response = await fetch(url, {
