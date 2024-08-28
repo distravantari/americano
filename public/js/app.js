@@ -337,7 +337,7 @@ var app = new Framework7({
       url: "pages/americano/create.html",
     },
     {
-      path: "/americano-game/",
+      path: "/americano-game/:id",
       url: "pages/americano/game.html",
     },
     {

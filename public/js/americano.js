@@ -1,10 +1,25 @@
 var picker;
 
+
+$$(document).on('page:afterin', function (e, page) {
+    if (page.name === "create-americano") {
+    //   console.log("create-americano page detected after it's shown.");
+      localStorage.clear(); // Only clears localStorage after the page is shown
+      console.log("localstorage is cleared");
+    }
+  });
+
 // CREATE AMERICANO PAGE
-$$(document).on("page:init", '.page[data-name="create-americano"]', function (e) {
-     // Clear all localStorage data
-     localStorage.clear();
-     console.log("All localStorage data cleared");
+$$(document).on("page:init", '.page[data-name="create-americano"]', function (e, page) {
+    
+    // if (page.name === "create-americano") {
+    //     console.log("create-americano page detected.");
+    //     localStorage.clear();
+    //     console.log("localstorage is cleared");
+    //   } else {
+    //     console.log("Page name detected:", page.name);  // This will help debug
+    //   }
+     
 
     if (picker) {
         picker.destroy(); // Clean up the picker when the page is about to be destroyed
@@ -16,7 +31,7 @@ $$(document).on("page:init", '.page[data-name="create-americano"]', function (e)
         cols: [
         {
             textAlign: "center",
-            values: ["4", "5", "6", "8"],
+            values: ["4", "5", "6"],
         },
         ],
         // Set default value
@@ -65,7 +80,7 @@ $$(document).on("page:init", '.page[data-name="create-americano"]', function (e)
         // console.log(formData);
       
         // Send form data using fetch
-        fetch('https://americanotennis.com/api/americano/generateRounds', {
+        fetch('/api/americano/generateRounds', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -73,14 +88,13 @@ $$(document).on("page:init", '.page[data-name="create-americano"]', function (e)
             body: JSON.stringify(formData), // Convert form data to JSON
         })
             .then(response => {
-                // console.log('response:', response);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
             .then(data => {
-                // console.log('Success:', data);
+                // console.log('Success:', data.americano.title);
                 localStorage.setItem('americano-game', JSON.stringify(data.americano));
                 app.toast.create({
                     text: 'Americano game ready! Just a sec...',
@@ -89,7 +103,7 @@ $$(document).on("page:init", '.page[data-name="create-americano"]', function (e)
                 }).open();
                  // Navigate to another page after the toast
                 setTimeout(function () {
-                    app.views.main.router.navigate('/americano-game/');
+                    app.views.main.router.navigate('/americano-game/'+data.americano.title);
                 }, 2000); // Wait for the toast to disappear
             })
             .catch(error => {
@@ -347,15 +361,17 @@ function generateRoundsTable(roundsData, players) {
                     // Update the UI with the updated players array
                     populatePlayerStats(players);
                     
-                    console.log("Updated players", players);
+                    // console.log("Updated players", players);
                 }
             }
         });
     });
 }
 
-$$(document).on("page:init", '.page[data-name="americano-game"]', function (e) {
-
+$$(document).on("page:init", '.page[data-name="americano-game"]', function (e, page) {
+    // console.log("hai", page.route.params.id)
+    const gameID = page.route.params.id;
+    
     $$('.toolbar').css('display', 'none');
 
     // Get data from localStorage and convert it to JSON
@@ -380,6 +396,30 @@ $$(document).on("page:init", '.page[data-name="americano-game"]', function (e) {
 
     // Call the function to generate the rounds
     generateRoundsTable(gameData.rounds, players);
+
+    $$('#screenshotButton').on('click', function () {
+        fetch('/api/screenshot/'+gameID, {
+            method: 'GET'
+          })
+          .then(response => response.blob())
+          .then(blob => {
+            // Create a link element to trigger download
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'gameID.png';
+      
+            // Trigger the download
+            document.body.appendChild(link);
+            link.click();
+      
+            // Clean up
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            console.log('Done taking screenshot:',blob )
+          })
+          .catch(error => console.error('Error taking screenshot:', error));
+    });
 });
 
 // END OF AMERICANO PAGE

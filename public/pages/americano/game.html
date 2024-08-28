@@ -38,27 +38,35 @@
           </div>
         </div>
 
-        <a href="#" data-actions=".share-action" class="button button-fill actions-open">Share This Game</a>
-        <div class="actions-modal actions-grid share-action">
-          <div class="actions-group">
-            <div class="actions-button">
-              <div class="actions-button-media"><img src="img/icons/instagram.svg" width="48" alt=""></div>
-              <div class="actions-button-text">Instagram</div>
+        <p class="grid grid-cols-2 grid-gap grid-buttons">  
+          <a href="#" data-actions=".share-action" class="button button-fill actions-open">Share This Game</a>
+          <a href="#" class="button button-fill button-icon-right color-red" id="screenshotButton">
+            Screenshot
+            <i class="icon f7-icons">camera</i>
+          </a>
+        </p>
+        
+          <div class="actions-modal actions-grid share-action">
+            <div class="actions-group">
+              <div class="actions-button">
+                <div class="actions-button-media"><img src="img/icons/instagram.svg" width="48" alt=""></div>
+                <div class="actions-button-text">Instagram</div>
+              </div>
+              <div class="actions-button">
+                <div class="actions-button-media"><img src="img/icons/tiktok.svg" width="48" alt=""></div>
+                <div class="actions-button-text">TikTok</div>
+              </div>
+              <div class="actions-button">
+                <div class="actions-button-media"><img src="img/icons/twitter.svg" width="48" alt=""></div>
+                <div class="actions-button-text">Twitter</div>
+              </div>
             </div>
-            <div class="actions-button">
-              <div class="actions-button-media"><img src="img/icons/tiktok.svg" width="48" alt=""></div>
-              <div class="actions-button-text">TikTok</div>
-            </div>
-            <div class="actions-button">
-              <div class="actions-button-media"><img src="img/icons/twitter.svg" width="48" alt=""></div>
-              <div class="actions-button-text">Twitter</div>
-            </div>
-          </div>
         </div>
 
         <p>
           <a class="button button-fill color-dark sheet-open" href="#" data-sheet=".my-sheet-swipe-to-close">Done</a>
         </p>
+        
         <div class="sheet-modal my-sheet-swipe-to-close" data-backdrop="true" data-swipe-to-close="true">
           <div class="sheet-modal-inner">
             <div class="page-content">

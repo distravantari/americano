@@ -1,4 +1,5 @@
 const express = require('express');
+const puppeteer = require('puppeteer');
 const router = express.Router();
 
 const { generateRounds } = require('../controllers/americano');
@@ -45,6 +46,22 @@ router.post('/americano/generateRounds', (req, res) => {
     console.error('Error generating rounds:', error);
     res.status(500).json({ error: 'Failed to generate rounds.' });
   }
+});
+
+router.get('/screenshot/:gameID', async (req, res) => {
+  const { gameID } = req.params;
+
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.goto('http://localhost:3000/#!/americano-game/'+gameID); // Replace with your game page URL
+
+  // Capture a screenshot of the full page
+  const screenshot = await page.screenshot({ fullPage: true });
+
+  await browser.close();
+  res.setHeader('Content-Type', 'image/png');
+  res.setHeader('Content-Disposition', 'attachment; filename=americanogame.png');
+  res.send(screenshot);
 });
 
 module.exports = router;
