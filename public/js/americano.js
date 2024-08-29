@@ -10,16 +10,7 @@ $$(document).on('page:afterin', function (e, page) {
   });
 
 // CREATE AMERICANO PAGE
-$$(document).on("page:init", '.page[data-name="create-americano"]', function (e, page) {
-    
-    // if (page.name === "create-americano") {
-    //     console.log("create-americano page detected.");
-    //     localStorage.clear();
-    //     console.log("localstorage is cleared");
-    //   } else {
-    //     console.log("Page name detected:", page.name);  // This will help debug
-    //   }
-     
+$$(document).on("page:init", '.page[data-name="create-americano"]', function (e, page) { 
 
     if (picker) {
         picker.destroy(); // Clean up the picker when the page is about to be destroyed
