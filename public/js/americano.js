@@ -411,6 +411,49 @@ $$(document).on("page:init", '.page[data-name="americano-game"]', function (e, p
           })
           .catch(error => console.error('Error taking screenshot:', error));
     });
+
+    $$('#americano-done').off('click').on('click', function() {
+        // console.log("gameData", gameData.isPrivate)
+        var tableBody = document.getElementById('playerStatsTableBody');
+        var tableData = [];
+    
+        tableBody.querySelectorAll('tr').forEach(function(row) {
+            var rowData = [];
+            row.querySelectorAll('td').forEach(function(cell) {
+                rowData.push(cell.textContent);
+            });
+            tableData.push(rowData);
+        });
+    
+        console.log(tableData);
+
+        const data = {
+            game: gameID,
+            data: tableData,
+            community: "example-community",
+            isPrivate: gameData.isPrivate
+          };
+
+        fetch('/api/game-standing', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+          })
+          .then(responseData => {
+            console.log('Success:', responseData);
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+    });
 });
 
 // END OF AMERICANO PAGE

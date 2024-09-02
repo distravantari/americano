@@ -350,6 +350,10 @@ var app = new Framework7({
       url: "pages/americano/search.html",
     },
     {
+      path: "/result/:id",
+      url: "pages/americano/result.html",
+    },
+    {
       path: "/discover/",
       url: "pages/americano/discover.html",
     },
@@ -774,12 +778,12 @@ function preloadPages() {
 
 preloadPages();
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
-      console.log('Service Worker registered with scope:', registration.scope);
-    }).catch(function(error) {
-      console.log('Service Worker registration failed:', error);
-    });
-  });
-}
+// if ('serviceWorker' in navigator) {
+//   window.addEventListener('load', function() {
+//     navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+//       console.log('Service Worker registered with scope:', registration.scope);
+//     }).catch(function(error) {
+//       console.log('Service Worker registration failed:', error);
+//     });
+//   });
+// }

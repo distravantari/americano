@@ -64,4 +64,66 @@ router.get('/screenshot/:gameID', async (req, res) => {
   res.send(screenshot);
 });
 
+router.post('/game-standing', async (req, res) => {
+  const { game, data, community, isPrivate } = req.body;
+
+  // Validate input
+  if (!game || !data || !Array.isArray(data) || !community || typeof isPrivate !== 'boolean') {
+      return res.status(400).send('Invalid input');
+  }
+
+  try {
+      // Insert the data into the database
+      const result = await req.pool.query(
+          'INSERT INTO "game-standing" (game, data, community, isPrivate) VALUES ($1, $2, $3, $4) RETURNING *',
+          [game, JSON.stringify(data), community, isPrivate]
+      );
+
+      res.status(201).json(result.rows[0]); // Return the inserted row
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+  }
+});
+
+router.delete('/game-standing', async (req, res) => {
+  const { community } = req.body;
+
+  // Validate input
+  if (!community) {
+      return res.status(400).send('Invalid input: community is required');
+  }
+
+  try {
+      // Delete the data from the database
+      const result = await req.pool.query(
+          'DELETE FROM "game-standing" WHERE community = $1 RETURNING *',
+          [community]
+      );
+
+      if (result.rowCount === 0) {
+          return res.status(404).send('No records found for the specified community');
+      }
+
+      res.status(200).json({
+          message: `${result.rowCount} record(s) deleted`,
+          deletedRows: result.rows
+      }); // Return the number of deleted rows and the details of the deleted records
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+  }
+});
+
+// GET route for fetching game standings
+router.get('/game-standing', async (req, res) => {
+  try {
+      const result = await req.pool.query('SELECT * FROM "game-standing"');
+      res.status(200).json(result.rows);
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;

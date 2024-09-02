@@ -1,61 +1,31 @@
-<div class="page">
-    <div class="navbar navbar-large">
-      <div class="navbar-bg"></div>
-      <div class="navbar-inner">
-        <div class="left">
-          <a href="#" class="link back">
-            <i class="icon f7-icons arrow-back">arrow_left</i>
-          </a>
-        </div>
-        <div class="title">Search</div>
-        <div class="title-large">
-          <div class="title-large-text">Search</div>
-        </div>
-      </div>
-    </div>
-    <div class="page-content">
-      <form class="searchbar searchbar-init searchbar-inline searchbar-search-page" data-search-container=".faq-list"
-        data-search-in=".item-title">
-        <div class="searchbar-inner">
-          <div class="searchbar-input-wrap">
-            <input type="search" placeholder="Sorry.. this feature is quite expensive :(" id="search-americano">
-            <i class="searchbar-icon"></i>
-            <span class="input-clear-button"></span>
-          </div>
-          <span class="searchbar-disable-button">Cancel</span>
-        </div>
-      </form>
-  
-      <div class="section-title">Communities</div>
-      <swiper-container class="full-width categories-slider" slides-per-view="auto" space-between="10"
-        slides-offset-after="15" slides-offset-before="15" speed="400">
-        <swiper-slide>
-          <a href="#" class="link category-slide">OHT</a>
-        </swiper-slide>
-        <swiper-slide>
-          <a href="#" class="link category-slide">TM</a>
-        </swiper-slide>
-        <swiper-slide>
-          <a href="#" class="link category-slide">SCS</a>
-        </swiper-slide>
-
-        <!-- EXAMPLE ON HOW TO USE CATEGORIES -->
-        <!-- <swiper-slide>
-            <a href="#" data-href="/post-list/" class="link category-slide">SCS</a>
-        </swiper-slide> -->
-
-      </swiper-container>
-      <div class="section-title">Suggested</div>
-      <div class="post-list">
-        <a href="/" class="link post-horizontal">
-          <div class="infos">
-            <div class="post-category">oops..</div>
-            <div class="post-title">Sorry, we don't have the budget for this -__-</div>
-            <div class="post-date">1 months ago</div>
-          </div>
-          <div class="post-image"><img src="img/americano/logo-white-big.png" alt=""></div>
+<div class="page" data-name="americano-search">
+  <div class="navbar">
+    <div class="navbar-bg"></div>
+    <div class="navbar-inner">
+      <div class="left">
+        <a href="#" class="link back">
+          <i class="icon f7-icons arrow-back">arrow_left</i>
         </a>
       </div>
+      <div class="title">Search</div>
     </div>
   </div>
-  
+  <div class="page-content">
+    <form class="searchbar searchbar-init searchbar-inline" data-search-container="#message-list"
+      data-search-in=".item-content">
+      <div class="searchbar-inner">
+        <div class="searchbar-input-wrap">
+          <input type="search" placeholder="Search">
+          <i class="searchbar-icon"></i>
+          <span class="input-clear-button"></span>
+        </div>
+        <span class="searchbar-disable-button if-not-aurora">Cancel</span>
+      </div>
+    </form>
+    <h2 class="list-title">Americano Game</h2>
+    <div class="list detailed-list list-outline list-dividers full-width message-list" id="message-list">
+      <ul id="list-of-result">
+      </ul>
+    </div>
+  </div>
+</div>

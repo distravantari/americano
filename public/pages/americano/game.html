@@ -11,33 +11,33 @@
           Player Stats
         </div>
         
-        
-        <!-- Standing Table Block -->
-        <div class="block no-padding">
-          <div class="table-responsive">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th class="label-cell">Rank</th>
-                  <th class="label-cell">Name</th>
-                  <th class="numeric-cell">G+</th>
-                  <th class="numeric-cell">G-</th>
-                  <th class="numeric-cell">G+-</th>
-                  <th class="numeric-cell">T+</th>
-                  <th class="numeric-cell">T-</th>
-                </tr>
-              </thead>
-              <tbody id="playerStatsTableBody"></tbody>
-            </table>
-          </div>
-        </div>
+        <form action="#" id="the-americano-game">
+            <!-- Standing Table Block -->
+            <div class="block no-padding">
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th class="label-cell">Rank</th>
+                      <th class="label-cell">Name</th>
+                      <th class="numeric-cell">G+</th>
+                      <th class="numeric-cell">G-</th>
+                      <th class="numeric-cell">G+-</th>
+                      <th class="numeric-cell">T+</th>
+                      <th class="numeric-cell">T-</th>
+                    </tr>
+                  </thead>
+                  <tbody id="playerStatsTableBody"></tbody>
+                </table>
+              </div>
+            </div>
 
-         <!-- Round Table Block -->
-        <div class="block no-padding">
-          <div class="table-responsive" id="roundsContainer">
-          </div>
-        </div>
-
+            <!-- Round Table Block -->
+            <div class="block no-padding">
+              <div class="table-responsive" id="roundsContainer">
+              </div>
+            </div>
+        </form>
         <p class="grid grid-cols-2 grid-gap grid-buttons">  
           <a href="#" data-actions=".share-action" class="button button-fill actions-open">Share This Game</a>
           <a href="#" class="button button-fill button-icon-right color-red" id="screenshotButton">
@@ -64,7 +64,7 @@
         </div>
 
         <p>
-          <a class="button button-fill color-dark sheet-open" href="#" data-sheet=".my-sheet-swipe-to-close">Done</a>
+          <a class="button button-fill color-dark sheet-open" href="#" data-sheet=".my-sheet-swipe-to-close" id="americano-done">Done</a>
         </p>
         
         <div class="sheet-modal my-sheet-swipe-to-close" data-backdrop="true" data-swipe-to-close="true">

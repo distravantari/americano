@@ -3,10 +3,27 @@ const express = require('express');
 const path = require('path');
 const apiRoutes = require('./private/routes/api');
 const webhookRoutes = require('./private/routes/webhook.js');
+const fs = require('fs');
+const pool = require('./private/db');
 const app = express();
 
 // Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, 'public')));
+
+const initDb = async () => {
+  const query = fs.readFileSync('./private/create_tables.sql').toString();
+  await pool.query(query);
+  console.log('Tables created successfully.');
+};
+
+initDb().catch(err => console.error('Error initializing the database:', err.message));
+
+// Middleware to attach pool to req
+app.use((req, res, next) => {
+  req.pool = pool;
+  next();
+});
+
 
 // Middleware to parse JSON bodies (for POST requests)
 app.use(express.json());
