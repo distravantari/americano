@@ -68,7 +68,9 @@ $$(document).on("page:init", '.page[data-name="create-americano"]', function (e,
         e.preventDefault();
       
         var formData = app.form.convertToData('#createAmericano'); // Convert form data to object
-        // console.log(formData);
+        const isPrivate = document.querySelector('#createAmericano input[name="isPrivate"]').checked;
+        // Append the checkbox value to the formData object
+        formData.isPrivate = isPrivate; // Use dot notation or bracket notation
       
         // Send form data using fetch
         fetch('/api/americano/generateRounds', {
@@ -85,7 +87,7 @@ $$(document).on("page:init", '.page[data-name="create-americano"]', function (e,
                 return response.json();
             })
             .then(data => {
-                // console.log('Success:', data.americano.title);
+                // console.log('Success:', data.americano);
                 localStorage.setItem('americano-game', JSON.stringify(data.americano));
                 app.toast.create({
                     text: 'Americano game ready! Just a sec...',
@@ -425,7 +427,7 @@ $$(document).on("page:init", '.page[data-name="americano-game"]', function (e, p
             tableData.push(rowData);
         });
     
-        console.log(tableData);
+        console.log("gameData", gameData);
 
         const data = {
             game: gameID,
@@ -433,6 +435,8 @@ $$(document).on("page:init", '.page[data-name="americano-game"]', function (e, p
             community: "example-community",
             isPrivate: gameData.isPrivate
           };
+
+          console.log("data", data);
 
         fetch('/api/game-standing', {
             method: 'POST',

@@ -369,6 +369,15 @@ var app = new Framework7({
   ],
 });
 
+// tab-link
+// Handle tab link click
+$$('.tab-link').on('click', function () {
+  // Remove active class from all tab links
+  $$('.tab-link').removeClass('tab-link-active');
+  // Add active class to the clicked tab link
+  $$(this).addClass('tab-link-active');
+});
+
 // 2. Dialog
 
 $$(document).on("page:init", '.page[data-name="dialog"]', function (e) {

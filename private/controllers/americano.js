@@ -35,7 +35,7 @@ function generateRounds(formData) {
 
   return {
       title: formData.title,
-      isPrivate: true,
+      isPrivate: formData.isPrivate,
       players: players,
       rounds: rounds
   };
