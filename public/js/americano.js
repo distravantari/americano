@@ -358,12 +358,24 @@ function generateRoundsTable(roundsData, players) {
                 }
             }
         });
+        // Initialize the all-rounds-game data from localStorage or create a new array if not found
+
     });
 }
 
 $$(document).on("page:init", '.page[data-name="americano-game"]', function (e, page) {
     // console.log("hai", page.route.params.id)
     const gameID = page.route.params.id;
+
+    // Use setTimeout to ensure the element is rendered if needed (try without first)
+    setTimeout(() => {
+        const titleElement = document.getElementById("game-title");
+        if (titleElement) {
+            titleElement.innerHTML = `${gameID}'s Game`;
+        } else {
+            console.error("Title element not found");
+        }
+    }, 100); // Adjust the delay if needed
     
     $$('.toolbar').css('display', 'none');
 
@@ -390,30 +402,6 @@ $$(document).on("page:init", '.page[data-name="americano-game"]', function (e, p
     // Call the function to generate the rounds
     generateRoundsTable(gameData.rounds, players);
 
-    $$('#screenshotButton').on('click', function () {
-        fetch('/api/screenshot/'+gameID, {
-            method: 'GET'
-          })
-          .then(response => response.blob())
-          .then(blob => {
-            // Create a link element to trigger download
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'gameID.png';
-      
-            // Trigger the download
-            document.body.appendChild(link);
-            link.click();
-      
-            // Clean up
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-            console.log('Done taking screenshot:',blob )
-          })
-          .catch(error => console.error('Error taking screenshot:', error));
-    });
-
     $$('#americano-done').off('click').on('click', function() {
         // console.log("gameData", gameData.isPrivate)
         var tableBody = document.getElementById('playerStatsTableBody');
@@ -432,7 +420,7 @@ $$(document).on("page:init", '.page[data-name="americano-game"]', function (e, p
         const data = {
             game: gameID,
             data: tableData,
-            community: "example-community",
+            community: "unknown",
             isPrivate: gameData.isPrivate
           };
 

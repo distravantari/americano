@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /404/
+Disallow: /oht/
+Disallow: /americano-game/
+Disallow: /result/
+
+Allow: /what-is-americano-tennis/
+
+Sitemap: https://americanotennis.com/sitemap.xml

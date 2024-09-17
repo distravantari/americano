@@ -31,28 +31,7 @@ function populateList(data) {
       // Append the newly created list item to the ul
       listElement.appendChild(listItem);
     });
-  }
-  
-  // Example usage
-  const data = [
-    {
-      imgSrc: 'img/avatars/5.jpg',
-      name: 'Tes Jameson',
-      badge: 'OHT',
-      footer: 'Can you send me the report by the end of the day?',
-      linkHref: '/result/tes',
-      itemAfter: 'Private'
-    },
-    {
-      imgSrc: 'img/avatars/6.jpg',
-      name: 'HOLA Doe',
-      badge: 'ABC',
-      footer: 'Are you coming to the meeting?',
-      linkHref: '/result/john',
-      itemAfter: 'Work'
-    },
-    // Add more items as needed
-  ];  
+  } 
 
   $$(document).on("page:init", '.page[data-name="americano-search"]', function (e, page) {
     console.log("we're in search here");
