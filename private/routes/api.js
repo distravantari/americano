@@ -12,7 +12,7 @@ router.get('/users', (req, res) => {
 
 // Define a POST route to generate rounds
 router.post('/americano/generateRounds', (req, res) => {
-  const { numberOfPlayers, title, isPrivate } = req.body;
+  const { numberOfPlayers, title, isPrivate, community } = req.body;
   
   // Extract players from req.body
   const totalPlayers = parseInt(numberOfPlayers, 10);
@@ -38,6 +38,7 @@ router.post('/americano/generateRounds', (req, res) => {
       numberOfPlayers: numberOfPlayers,
       players,
       title,
+      community,
     });
 
     // Send the response back to the client

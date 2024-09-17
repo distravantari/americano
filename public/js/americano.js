@@ -66,11 +66,13 @@ $$(document).on("page:init", '.page[data-name="create-americano"]', function (e,
     
     $$('#createAmericano').on('submit', function (e) {
         e.preventDefault();
-      
+        
         var formData = app.form.convertToData('#createAmericano'); // Convert form data to object
+        // console.log("formData", formData)
         const isPrivate = document.querySelector('#createAmericano input[name="isPrivate"]').checked;
         // Append the checkbox value to the formData object
         formData.isPrivate = isPrivate; // Use dot notation or bracket notation
+        formData.community = formData.community;
       
         // Send form data using fetch
         fetch('/api/americano/generateRounds', {
@@ -416,15 +418,16 @@ $$(document).on("page:init", '.page[data-name="americano-game"]', function (e, p
         });
     
         console.log("gameData", gameData);
+        const community = gameData.community !== "" ? gameData.community : "unknown"
 
         const data = {
             game: gameID,
             data: tableData,
-            community: "unknown",
+            community: community,
             isPrivate: gameData.isPrivate
-          };
+        };
 
-          console.log("data", data);
+        console.log("data", data);
 
         fetch('/api/game-standing', {
             method: 'POST',

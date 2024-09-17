@@ -34,10 +34,11 @@ function generateRounds(formData) {
   }
 
   return {
-      title: formData.title,
-      isPrivate: formData.isPrivate,
-      players: players,
-      rounds: rounds
+    title: formData.title,
+    isPrivate: formData.isPrivate,
+    community: formData.community,
+    players: players,
+    rounds: rounds
   };
 }
   
