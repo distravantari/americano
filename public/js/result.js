@@ -6,13 +6,14 @@ function populateList(data) {
   
     // Loop through the data array
     data.forEach(item => {
+      console.log("item", item)
       const listItem = document.createElement('li');
       listItem.className = 'swipeout';
   
       listItem.innerHTML = `
         <div class="swipeout-content">
           <a href="${item.linkHref}" class="item-link item-content link">
-            <div class="item-media"><img src="${item.imgSrc}" alt=""></div>
+            <div class="item-media"><img src="img/americano/tennis-ball.png" alt=""></div>
             <div class="item-inner">
               <div class="item-title">
                 <div class="item-name">

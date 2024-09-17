@@ -99,7 +99,7 @@ var app = new Framework7({
                   name: item.game,  // Use the game name from the API data
                   badge: item.community,  // Use the community from the API data
                   footer: `${item.data[0][1]} is the winner`,  // Use the first entry in data array and add "is the winner"
-                  linkHref: `#`,  // `/result/${item.game}`
+                  linkHref: `/result/${item.id}`,  // `/result/${item.game}`
                   itemAfter: item.isprivate === true ? "private" : "public"
                 };
               });
@@ -122,6 +122,70 @@ var app = new Framework7({
     {
       path: "/result/:id",
       url: "pages/americano/result.html",
+      on: {
+        pageInit: function (e, page) {
+          const ID = page.route.params.id;
+
+          function populatePlayerStatsTable(apiData) {
+            console.log("apiData --",apiData)
+
+            setTimeout(() => {
+              const titleElement = document.getElementById("result-title");
+              if (titleElement) {
+                  titleElement.innerHTML = `${apiData[0].game}'s by ${apiData[0].community}`;
+              } else {
+                  console.error("Title element not found");
+              }
+            }, 100); // Adjust the delay if needed
+
+            // Select the table body element
+            const tableBody = document.getElementById("playerStatsTableBody");
+          
+            // Clear existing rows in case of refresh
+            tableBody.innerHTML = '';
+          
+            // Loop through the data array from the API
+            apiData[0].data.forEach(player => {
+              // Create a new row
+              const row = document.createElement('tr');
+          
+              // Add each player's data as table cells
+              row.innerHTML = `
+                <td class="label-cell">${player[0]}</td>  <!-- Rank -->
+                <td class="label-cell">${player[1]}</td>  <!-- Name -->
+                <td class="numeric-cell">${player[2]}</td> <!-- G+ -->
+                <td class="numeric-cell">${player[3]}</td> <!-- G- -->
+                <td class="numeric-cell">${player[4]}</td> <!-- G+- -->
+                <td class="numeric-cell">${player[5]}</td> <!-- T+ -->
+                <td class="numeric-cell">${player[6]}</td> <!-- T- -->
+              `;
+          
+              // Append the row to the table body
+              tableBody.appendChild(row);
+            });
+          }
+
+          fetch('/api/game-standing/'+ID, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return response.json();
+          })
+          .then(apiData => {
+            console.log("apiData", apiData)
+            populatePlayerStatsTable(apiData);
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+        }
+      }
     },
     {
       path: "/discover/",

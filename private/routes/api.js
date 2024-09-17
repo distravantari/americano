@@ -49,22 +49,6 @@ router.post('/americano/generateRounds', (req, res) => {
   }
 });
 
-router.get('/screenshot/:gameID', async (req, res) => {
-  const { gameID } = req.params;
-
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  await page.goto('http://localhost:3000/#!/americano-game/'+gameID); // Replace with your game page URL
-
-  // Capture a screenshot of the full page
-  const screenshot = await page.screenshot({ fullPage: true });
-
-  await browser.close();
-  res.setHeader('Content-Type', 'image/png');
-  res.setHeader('Content-Disposition', 'attachment; filename=americanogame.png');
-  res.send(screenshot);
-});
-
 router.post('/game-standing', async (req, res) => {
   const { game, data, community, isPrivate } = req.body;
 
@@ -84,6 +68,35 @@ router.post('/game-standing', async (req, res) => {
   } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
+  }
+});
+
+// PATCH route for updating the isPrivate field for a specific game standing
+router.patch('/game-standing/:id', async (req, res) => {
+  const { id } = req.params; // Get the ID from the URL params
+  const { isPrivate } = req.body; // Get the isPrivate value from the request body
+
+  // Validate input
+  if (typeof isPrivate !== 'boolean') {
+    return res.status(400).send('Invalid input, isPrivate must be a boolean');
+  }
+
+  try {
+    // Update the isPrivate field in the database for the specific id
+    const result = await req.pool.query(
+      'UPDATE "game-standing" SET isPrivate = $1 WHERE id = $2 RETURNING *',
+      [isPrivate, id]
+    );
+
+    // If no rows were affected, return a 404 Not Found error
+    if (result.rows.length === 0) {
+      return res.status(404).send('Game standing not found');
+    }
+
+    res.status(200).json(result.rows[0]); // Return the updated row
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
   }
 });
 
@@ -117,14 +130,26 @@ router.delete('/game-standing', async (req, res) => {
 });
 
 // GET route for fetching game standings
-router.get('/game-standing', async (req, res) => {
+router.get('/game-standing/:id?', async (req, res) => {
+  const { id } = req.params;
   try {
-      // const result = await req.pool.query('SELECT * FROM "game-standing"');
-      const result = await req.pool.query('SELECT * FROM "game-standing" WHERE isprivate = false');
-      res.status(200).json(result.rows);
+    let query;
+    let values = [];
+
+    if (id) {
+      // If an id is provided, fetch data for that specific id
+      query = 'SELECT * FROM "game-standing" WHERE id = $1';
+      values = [id];
+    } else {
+      // If no id is provided, fetch all data
+      query = 'SELECT * FROM "game-standing" WHERE isprivate = false';
+    }
+
+    const result = await req.pool.query(query, values);
+    res.status(200).json(result.rows);
   } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
+    console.error(err.message);
+    res.status(500).send('Server Error');
   }
 });
 
