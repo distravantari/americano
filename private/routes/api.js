@@ -119,7 +119,8 @@ router.delete('/game-standing', async (req, res) => {
 // GET route for fetching game standings
 router.get('/game-standing', async (req, res) => {
   try {
-      const result = await req.pool.query('SELECT * FROM "game-standing"');
+      // const result = await req.pool.query('SELECT * FROM "game-standing"');
+      const result = await req.pool.query('SELECT * FROM "game-standing" WHERE isprivate = false');
       res.status(200).json(result.rows);
   } catch (err) {
       console.error(err.message);
