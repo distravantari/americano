@@ -453,3 +453,92 @@ $$(document).on("page:init", '.page[data-name="americano-game"]', function (e, p
 
 // END OF AMERICANO PAGE
 
+function mergeGameDataWithMatchDetails(inputData) {
+    const mergedData = {};
+  
+    inputData.forEach((game) => {
+      game.data.forEach((entry) => {
+        const name = entry[1]; // The player's name
+        const gPlus = Number(entry[2]); // G+ (data[2])
+        const gMinus = Number(entry[3]); // G- (data[3])
+  
+        if (mergedData[name]) {
+          // If the name already exists, update match count and sum the G+ and G-
+          mergedData[name].matchPlayed += 1;
+          mergedData[name].gPlus += gPlus;
+          mergedData[name].gMinus += gMinus;
+          mergedData[name].gPlusMinus = mergedData[name].gPlus - mergedData[name].gMinus;
+        } else {
+          // If the name doesn't exist, create a new entry
+          mergedData[name] = {
+            matchPlayed: 1,
+            gPlus: gPlus,
+            gMinus: gMinus,
+            gPlusMinus: gPlus - gMinus
+          };
+        }
+      });
+    });
+  
+    // Convert the merged data object into an array format for sorting
+    const sortedArray = Object.entries(mergedData).map(([name, stats]) => ({
+      name,
+      matchPlayed: stats.matchPlayed,
+      gPlus: stats.gPlus,
+      gMinus: stats.gMinus,
+      gPlusMinus: stats.gPlusMinus,
+    }));
+  
+    // Sort the array based on G+, G-, and G+-
+    sortedArray.sort((a, b) => {
+      if (b.gPlus !== a.gPlus) {
+        return b.gPlus - a.gPlus; // Higher G+ first
+      }
+      if (a.gMinus !== b.gMinus) {
+        return a.gMinus - b.gMinus; // Lower G- first
+      }
+      return b.gPlusMinus - a.gPlusMinus; // Higher G+- first
+    });
+  
+    // Limit the result to top 5
+    const top5Array = sortedArray.slice(0, 5);
+  
+    // Assign ranks
+    let rank = 1;
+    let lastGPlus = null;
+    let lastGMinus = null;
+    let lastGPlusMinus = null;
+    let currentRank = 1;
+  
+    const resultArray = top5Array.map((player, index) => {
+      if (
+        player.gPlus !== lastGPlus ||
+        player.gMinus !== lastGMinus ||
+        player.gPlusMinus !== lastGPlusMinus
+      ) {
+        rank = currentRank;
+      }
+  
+      // Prepare the row for output
+      const row = [
+        rank.toString(),
+        player.name,
+        player.matchPlayed.toString(),
+        player.gPlus.toString(),
+        player.gMinus.toString(),
+        player.gPlusMinus.toString(),
+      ];
+  
+      // Update the last seen G+, G-, and G+-
+      lastGPlus = player.gPlus;
+      lastGMinus = player.gMinus;
+      lastGPlusMinus = player.gPlusMinus;
+  
+      currentRank += 1; // Increment the rank counter
+  
+      return row;
+    });
+  
+    return resultArray;
+  }
+

@@ -60,7 +60,7 @@ router.post('/game-standing', async (req, res) => {
   try {
       // Insert the data into the database
       const result = await req.pool.query(
-          'INSERT INTO "game-standing" (game, data, community, isPrivate) VALUES ($1, $2, $3, $4) RETURNING *',
+          'INSERT INTO "game-standing" (game, data, community, isPrivate, createdAt) VALUES ($1, $2, $3, $4, NOW()) RETURNING *',
           [game, JSON.stringify(data), community, isPrivate]
       );
 
@@ -131,17 +131,24 @@ router.delete('/game-standing', async (req, res) => {
 
 // GET route for fetching game standings
 router.get('/game-standing/:id?', async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.params; // Get the id parameter from the URL if it exists
+  const { community } = req.query; // Get the community parameter from the query string
+
   try {
     let query;
     let values = [];
 
+    // Build query based on whether id and/or community is provided
     if (id) {
       // If an id is provided, fetch data for that specific id
       query = 'SELECT * FROM "game-standing" WHERE id = $1';
       values = [id];
+    } else if (community) {
+      // If no id but a community is provided, fetch data for that specific community
+      query = 'SELECT * FROM "game-standing" WHERE community = $1 AND isprivate = false';
+      values = [community];
     } else {
-      // If no id is provided, fetch all data
+      // If neither id nor community is provided, fetch all public data
       query = 'SELECT * FROM "game-standing" WHERE isprivate = false';
     }
 

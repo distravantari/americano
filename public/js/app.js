@@ -41,7 +41,54 @@ var app = new Framework7({
     {
       path: "/",
       url: "index.html",
-      keepAlive: true,
+      on: {
+        pageInit: function (e, page) {
+          fetch('/api/game-standing?community=oht', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return response.json();
+          })
+          .then(apiData => {
+            // console.log(mergeGameDataWithMatchDetails(apiData));
+            const alltimehigh = mergeGameDataWithMatchDetails(apiData)
+            populateTable(alltimehigh);
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+
+          function populateTable(data) {
+            // Select the table body
+            const tableBody = document.getElementById("alltimescore");
+          
+            // Clear existing rows
+            tableBody.innerHTML = '';
+          
+            // Loop through the data array
+            data.forEach(item => {
+              // Create a new row element
+              const row = document.createElement('tr');
+          
+              // Create cells and add data to each one
+              item.forEach(cellData => {
+                const cell = document.createElement('td');
+                cell.textContent = cellData;
+                row.appendChild(cell);
+              });
+          
+              // Append the row to the table body
+              tableBody.appendChild(row);
+            });
+          }
+        }
+      }
     },
     {
       path: "/create-americano/",
@@ -211,6 +258,12 @@ $$('.tab-link').on('click', function () {
   // Add active class to the clicked tab link
   $$(this).addClass('tab-link-active');
 });
+// On page load, set the active tab from localStorage
+const activeTab = localStorage.getItem('activeTab');
+if (activeTab) {
+  $$('.tab-link').removeClass('tab-link-active');
+  $$(`.tab-link[href="${activeTab}"]`).addClass('tab-link-active');
+}
 
 // 2. Dialog
 
