@@ -59,7 +59,66 @@ var app = new Framework7({
     {
       path: "/search/",
       url: "pages/americano/search.html",
-    },
+      on: {
+        pageInit: function (e, page) {
+          console.log("we're in search here");
+    
+          // Pull to refresh container
+          var pullToRefreshPage = $$(".ptr-content");
+    
+          // Add 'refresh' listener on it
+          pullToRefreshPage.on("ptr:refresh", function (e) {
+            // Simulate 2s loading
+            setTimeout(function () {
+              // Trigger the fetch logic when pull-to-refresh is triggered
+              fetchData();
+            }, 2000);
+          });
+    
+          // Initial fetch when the page is loaded
+          fetchData();
+    
+          function fetchData() {
+            fetch('/api/game-standing', {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+              }
+              return response.json();
+            })
+            .then(apiData => {
+              // Transform the API data into the format needed by the frontend
+              const transformedData = apiData.map(item => {
+                return {
+                  imgSrc: 'img/avatars/6.jpg',  // Static image source (can be dynamic if needed)
+                  name: item.game,  // Use the game name from the API data
+                  badge: item.community,  // Use the community from the API data
+                  footer: `${item.data[0][1]} is the winner`,  // Use the first entry in data array and add "is the winner"
+                  linkHref: `#`,  // `/result/${item.game}`
+                  itemAfter: item.isprivate === true ? "private" : "public"
+                };
+              });
+    
+              // Call a function to populate the list (assuming you have a function for this)
+              populateList(transformedData);
+              
+              // Reset PTR after loading is done
+              app.ptr.done(pullToRefreshPage);
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              // Ensure PTR is also reset in case of an error
+              app.ptr.done(pullToRefreshPage);
+            });
+          }
+        },
+      },
+    },    
     {
       path: "/result/:id",
       url: "pages/americano/result.html",
