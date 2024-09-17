@@ -43,7 +43,7 @@ var app = new Framework7({
       url: "index.html",
       on: {
         pageInit: function (e, page) {
-          fetch('/api/game-standing?community=oht', {
+          fetch('/api/game-standing?community=OHT', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json'
