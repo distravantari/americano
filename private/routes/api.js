@@ -100,23 +100,34 @@ router.patch('/game-standing/:id', async (req, res) => {
   }
 });
 
-router.delete('/game-standing', async (req, res) => {
-  const { community } = req.body;
+router.delete('/game-standing/:id?', async (req, res) => {
+  const { id } = req.params; // Get the id from the URL params, optional
+  const { community } = req.body; // Get community from the request body
 
-  // Validate input
+  // Validate input: community is required, id is optional
   if (!community) {
       return res.status(400).send('Invalid input: community is required');
   }
 
   try {
-      // Delete the data from the database
-      const result = await req.pool.query(
-          'DELETE FROM "game-standing" WHERE community = $1 RETURNING *',
-          [community]
-      );
+      let query;
+      let values = [];
+
+      // If both id and community are provided, filter by both
+      if (id) {
+          query = 'DELETE FROM "game-standing" WHERE community = $1 AND id = $2 RETURNING *';
+          values = [community, id];
+      } else {
+          // If only community is provided, delete by community only
+          query = 'DELETE FROM "game-standing" WHERE community = $1 RETURNING *';
+          values = [community];
+      }
+
+      // Execute the delete query
+      const result = await req.pool.query(query, values);
 
       if (result.rowCount === 0) {
-          return res.status(404).send('No records found for the specified community');
+          return res.status(404).send('No records found for the specified community or id');
       }
 
       res.status(200).json({
@@ -128,6 +139,7 @@ router.delete('/game-standing', async (req, res) => {
       res.status(500).send('Server Error');
   }
 });
+
 
 // GET route for fetching game standings
 router.get('/game-standing/:id?', async (req, res) => {
