@@ -108,7 +108,7 @@ var app = new Framework7({
       url: "pages/americano/search.html",
       on: {
         pageInit: function (e, page) {
-          console.log("we're in search here");
+          // console.log("we're in search here");
     
           // Pull to refresh container
           var pullToRefreshPage = $$(".ptr-content");
@@ -174,7 +174,7 @@ var app = new Framework7({
           const ID = page.route.params.id;
 
           function populatePlayerStatsTable(apiData) {
-            console.log("apiData --",apiData)
+            // console.log("apiData --",apiData)
 
             setTimeout(() => {
               const titleElement = document.getElementById("result-title");
@@ -225,7 +225,7 @@ var app = new Framework7({
             return response.json();
           })
           .then(apiData => {
-            console.log("apiData", apiData)
+            // console.log("apiData", apiData)
             populatePlayerStatsTable(apiData);
           })
           .catch(error => {

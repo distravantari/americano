@@ -6,7 +6,7 @@ function populateList(data) {
   
     // Loop through the data array
     data.forEach(item => {
-      console.log("item", item)
+      // console.log("item", item)
       const listItem = document.createElement('li');
       listItem.className = 'swipeout';
   

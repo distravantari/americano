@@ -404,7 +404,7 @@ $$(document).on("page:init", '.page[data-name="americano-game"]', function (e, p
     // Call the function to generate the rounds
     generateRoundsTable(gameData.rounds, players);
 
-    $$('#americano-done').off('click').on('click', function() {
+    $$('#americano-done').off('click').once('click', function() {
         // console.log("gameData", gameData.isPrivate)
         var tableBody = document.getElementById('playerStatsTableBody');
         var tableData = [];
@@ -417,7 +417,7 @@ $$(document).on("page:init", '.page[data-name="americano-game"]', function (e, p
             tableData.push(rowData);
         });
     
-        console.log("gameData", gameData);
+        // console.log("gameData", gameData);
         const community = gameData.community !== "" ? gameData.community : "unknown"
 
         const data = {
