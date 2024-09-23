@@ -22,7 +22,7 @@ $$(document).on("page:init", '.page[data-name="create-americano"]', function (e,
         cols: [
         {
             textAlign: "center",
-            values: ["4", "5", "6"],
+            values: ["4", "5"],
         },
         ],
         // Set default value
