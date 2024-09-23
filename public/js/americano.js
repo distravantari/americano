@@ -55,7 +55,7 @@ $$(document).on("page:init", '.page[data-name="create-americano"]', function (e,
         if (numPlayers > 6) {
             // Handle court 1 for players 1 to 4
             const court1Header = document.createElement('h3');
-            court1Header.textContent = 'Court 1';
+            court1Header.textContent = 'Group 1';
             playerNamesDiv.appendChild(court1Header);
     
             for (let i = 1; i <= 4; i++) {
@@ -69,7 +69,7 @@ $$(document).on("page:init", '.page[data-name="create-americano"]', function (e,
     
             // Handle court 2 for players 5 to 8
             const court2Header = document.createElement('h3');
-            court2Header.textContent = 'Court 2';
+            court2Header.textContent = 'Group 2';
             playerNamesDiv.appendChild(court2Header);
     
             for (let i = 5; i <= 8; i++) {
