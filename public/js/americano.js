@@ -22,7 +22,7 @@ $$(document).on("page:init", '.page[data-name="create-americano"]', function (e,
         cols: [
         {
             textAlign: "center",
-            values: ["4", "5"],
+            values: ["4", "5", "6", "8"],
         },
         ],
         // Set default value
@@ -47,20 +47,51 @@ $$(document).on("page:init", '.page[data-name="create-americano"]', function (e,
     function updatePlayerFields(numPlayersInput) {
         // Clear the existing player fields
         playerNamesDiv.innerHTML = '';
-
+    
         // Get the selected number of players
         const numPlayers = parseInt(numPlayersInput);
-
-        // Generate input fields for each player
-        for (let i = 1; i <= numPlayers; i++) {
-            const playerInput = document.createElement('input');
-            playerInput.type = 'text';
-            playerInput.placeholder = `Player Name ${i}`;
-            playerInput.name = `player${i}`;
-
-            playerNamesDiv.appendChild(playerInput);
+        console.log(numPlayers)
+    
+        if (numPlayers > 6) {
+            // Handle court 1 for players 1 to 4
+            const court1Header = document.createElement('h3');
+            court1Header.textContent = 'Court 1';
+            playerNamesDiv.appendChild(court1Header);
+    
+            for (let i = 1; i <= 4; i++) {
+                const playerInput = document.createElement('input');
+                playerInput.type = 'text';
+                playerInput.placeholder = `Player Name ${i}`;
+                playerInput.name = `player${i}`;
+    
+                playerNamesDiv.appendChild(playerInput);
+            }
+    
+            // Handle court 2 for players 5 to 8
+            const court2Header = document.createElement('h3');
+            court2Header.textContent = 'Court 2';
+            playerNamesDiv.appendChild(court2Header);
+    
+            for (let i = 5; i <= 8; i++) {
+                const playerInput = document.createElement('input');
+                playerInput.type = 'text';
+                playerInput.placeholder = `Player Name ${i}`;
+                playerInput.name = `player${i}`;
+    
+                playerNamesDiv.appendChild(playerInput);
+            }
+        } else {
+            // Generate input fields for each player if less than or equal to 8 players
+            for (let i = 1; i <= numPlayers; i++) {
+                const playerInput = document.createElement('input');
+                playerInput.type = 'text';
+                playerInput.placeholder = `Player Name ${i}`;
+                playerInput.name = `player${i}`;
+    
+                playerNamesDiv.appendChild(playerInput);
+            }
         }
-    }
+    }    
 
     updatePlayerFields(4);
     
@@ -214,6 +245,8 @@ function generateRoundsTable(roundsData, players) {
     }
 
     var roundsHtml = ''; // This will store the complete HTML for all rounds
+    console.log("roundsData", roundsData);
+    console.log("players", players);
 
     roundsData.forEach(function(roundData) {
         // Start building the HTML for each round

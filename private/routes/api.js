@@ -27,8 +27,8 @@ router.post('/americano/generateRounds', (req, res) => {
   }
 
   // Validate the number of players
-  if (players.length < 4 || players.length > 6) {
-    return res.status(400).json({ error: 'Player count must be between 4 and 6.' });
+  if (players.length < 4 || players.length > 8) {
+    return res.status(400).json({ error: 'Player count must be between 4 and 8.' });
   }
 
   try {
