@@ -42,7 +42,7 @@ var app = new Framework7({
       path: "/",
       url: "index.html",
       on: {
-        pageInit: function (e, page) {
+        pageAfterIn: function (e, page) {
           fetch('/api/game-standing?community=OHT', {
             method: 'GET',
             headers: {
